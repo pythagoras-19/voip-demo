@@ -580,6 +580,133 @@ RTP Header (12 bytes):
         <li><strong>Traffic Management:</strong> Load balancing, failover, and call admission control</li>
         <li><strong>Regulatory Compliance:</strong> Support lawful intercept, emergency calling, and number portability</li>
       </ul>
+      <h4>Border Gateway Q&amp;A</h4>
+      <div class="guide-section">
+        <p><strong>Q: Is a border gateway hardware or software?</strong><br>
+        <strong>A:</strong> It can be either! Some border gateways are dedicated hardware appliances, while others are software solutions that run on standard servers or in the cloud.</p>
+        <p><strong>Q: How does a border gateway work?</strong><br>
+        <strong>A:</strong> It sits between your internal VoIP network and external networks (like the internet or a SIP trunk provider). It inspects, manages, and secures signaling (SIP) and media (RTP) traffic, often rewriting headers, translating protocols, and enforcing security policies.</p>
+        <p><strong>Q: Does a border gateway provide security?</strong><br>
+        <strong>A:</strong> Yes! It acts as a firewall for VoIP, protecting against attacks (like SIP floods, toll fraud, and eavesdropping), hiding internal IP addresses, and enforcing access controls.</p>
+        <p><strong>Q: Does it affect call quality?</strong><br>
+        <strong>A:</strong> It can help! By managing bandwidth, prioritizing voice traffic, and handling codec transcoding, a border gateway can improve call reliability and quality.</p>
+        <p><strong>Q: Is a border gateway required for all VoIP deployments?</strong><br>
+        <strong>A:</strong> Not always, but it's highly recommended for any business-grade or public-facing VoIP system, especially when connecting to external providers or the internet.</p>
+        <p><strong>Q: Can a border gateway help with NAT traversal?</strong><br>
+        <strong>A:</strong> Yes, border gateways often include NAT traversal features to ensure calls work across firewalls and private networks.</p>
+        <p><strong>Q: What protocols do border gateways support?</strong><br>
+        <strong>A:</strong> Most support SIP, but many also handle H.323, MGCP, and proprietary protocols.</p>
+        <p><strong>Q: Can a border gateway do media transcoding?</strong><br>
+        <strong>A:</strong> Yes, many can convert between codecs (e.g., G.711 to G.729) to ensure compatibility between networks.</p>
+        <p><strong>Q: Does a border gateway log calls?</strong><br>
+        <strong>A:</strong> Yes, most provide detailed call logs and statistics for troubleshooting and compliance.</p>
+        <p><strong>Q: Can it block unwanted calls?</strong><br>
+        <strong>A:</strong> Yes, border gateways can block calls based on rules, caller ID, or reputation databases to reduce spam and fraud.</p>
+        <p><strong>Q: How is a border gateway different from a firewall?</strong><br>
+        <strong>A:</strong> A firewall controls general network traffic, while a border gateway understands VoIP protocols and can manage, secure, and optimize voice traffic specifically.</p>
+        <p><strong>Q: Can a border gateway encrypt calls?</strong><br>
+        <strong>A:</strong> Yes, many support SRTP (Secure RTP) and TLS for encrypted signaling and media.</p>
+        <p><strong>Q: What happens if a border gateway fails?</strong><br>
+        <strong>A:</strong> High-availability setups use redundant gateways and automatic failover to maintain service if one device fails.</p>
+        <p><strong>Q: Can I use a border gateway in the cloud?</strong><br>
+        <strong>A:</strong> Yes, many vendors offer virtual or cloud-native border gateways for hosted or hybrid deployments.</p>
+        <p><strong>Q: Does a border gateway support SIP trunking?</strong><br>
+        <strong>A:</strong> Yes, it's a common use case—border gateways connect internal PBXs to external SIP trunk providers.</p>
+        <p><strong>Q: How do I configure a border gateway?</strong><br>
+        <strong>A:</strong> Configuration is usually done via a web interface, CLI, or API, and involves setting up network interfaces, security rules, protocol handling, and routing policies.</p>
+        <p><strong>Q: Can a border gateway limit call rates?</strong><br>
+        <strong>A:</strong> Yes, you can set call admission control policies to limit the number of concurrent calls or bandwidth usage.</p>
+        <p><strong>Q: What brands make border gateways?</strong><br>
+        <strong>A:</strong> Popular vendors include AudioCodes, Cisco, Oracle (Acme Packet), Ribbon (Sonus), and Sangoma.</p>
+        <p><strong>Q: Can a border gateway help with regulatory compliance?</strong><br>
+        <strong>A:</strong> Yes, features like lawful intercept, emergency calling, and number portability support compliance with telecom regulations.</p>
+        <p><strong>Q: How do I troubleshoot issues with a border gateway?</strong><br>
+        <strong>A:</strong> Use call logs, packet captures, and built-in diagnostic tools. Check for misconfigurations, network issues, or protocol mismatches.</p>
+        <p><strong>Q: Can a border gateway be used for video calls?</strong><br>
+        <strong>A:</strong> Yes, many support both voice and video traffic, handling SIP and RTP streams for both media types.</p>
+        <p><strong>Q: Does a border gateway support IPv6?</strong><br>
+        <strong>A:</strong> Most modern gateways support both IPv4 and IPv6, and can translate between them if needed.</p>
+        <p><strong>Q: Can I monitor a border gateway in real time?</strong><br>
+        <strong>A:</strong> Yes, most provide dashboards, SNMP, and APIs for real-time monitoring and alerts.</p>
+        <p><strong>Q: How much does a border gateway cost?</strong><br>
+        <strong>A:</strong> Prices vary widely—from a few hundred dollars for software solutions to tens of thousands for high-capacity hardware appliances.</p>
+        <p><strong>Q: Can a border gateway be updated remotely?</strong><br>
+        <strong>A:</strong> Yes, most support remote firmware updates and configuration management for security and feature enhancements.</p>
+      </div>
+      <!-- SIP Trunk Q&A -->
+      <h4>SIP Trunk Q&amp;A</h4>
+      <div class="guide-section">
+        <p><strong>Q: What is a SIP trunk?</strong><br>
+        <strong>A:</strong> A SIP trunk is a virtual phone line that uses the SIP protocol to connect your PBX to the public telephone network over the internet.</p>
+        <p><strong>Q: Is a SIP trunk physical or virtual?</strong><br>
+        <strong>A:</strong> It's virtual—no physical wires, just an internet connection and SIP credentials.</p>
+        <p><strong>Q: How many calls can a SIP trunk handle?</strong><br>
+        <strong>A:</strong> It depends on your provider and bandwidth; you can often add or remove channels as needed.</p>
+        <p><strong>Q: What are the benefits of SIP trunking?</strong><br>
+        <strong>A:</strong> Cost savings, scalability, flexibility, and the ability to use local numbers anywhere.</p>
+        <p><strong>Q: Do I need a border gateway for SIP trunking?</strong><br>
+        <strong>A:</strong> It's highly recommended for security and interoperability, especially for business use.</p>
+        <p><strong>Q: Can SIP trunks carry fax or video?</strong><br>
+        <strong>A:</strong> Yes, with the right configuration and codecs, SIP trunks can carry fax (T.38) and video calls.</p>
+      </div>
+      <!-- DID Numbers Q&A -->
+      <h4>DID Numbers Q&amp;A</h4>
+      <div class="guide-section">
+        <p><strong>Q: What is a DID number?</strong><br>
+        <strong>A:</strong> DID stands for Direct Inward Dialing—a phone number that routes directly to a specific extension or user.</p>
+        <p><strong>Q: Can I get a DID number in any area code?</strong><br>
+        <strong>A:</strong> Usually yes, most providers offer local numbers in many cities and countries.</p>
+        <p><strong>Q: Can I port my existing number to a VoIP DID?</strong><br>
+        <strong>A:</strong> Yes, number portability is supported by most providers.</p>
+        <p><strong>Q: How are DIDs used in business?</strong><br>
+        <strong>A:</strong> They allow customers to reach specific people or departments directly, bypassing receptionists or auto-attendants.</p>
+        <p><strong>Q: Can I have multiple DIDs on one SIP trunk?</strong><br>
+        <strong>A:</strong> Yes, you can assign many DIDs to a single trunk and route them as needed.</p>
+      </div>
+      <!-- VoIP Firewall Q&A -->
+      <h4>VoIP Firewall Q&amp;A</h4>
+      <div class="guide-section">
+        <p><strong>Q: What is a VoIP firewall?</strong><br>
+        <strong>A:</strong> A firewall that is aware of VoIP protocols (like SIP and RTP) and can filter, allow, or block voice traffic intelligently.</p>
+        <p><strong>Q: How is it different from a regular firewall?</strong><br>
+        <strong>A:</strong> It understands VoIP-specific traffic and can handle dynamic ports, NAT traversal, and protocol anomalies.</p>
+        <p><strong>Q: Do I need a special firewall for VoIP?</strong><br>
+        <strong>A:</strong> For reliable, secure VoIP, a VoIP-aware firewall is recommended, especially for business deployments.</p>
+        <p><strong>Q: Can a firewall block unwanted calls?</strong><br>
+        <strong>A:</strong> Yes, with the right rules, it can block calls from known bad actors or unwanted sources.</p>
+        <p><strong>Q: Can a firewall cause call quality issues?</strong><br>
+        <strong>A:</strong> Yes, if not configured properly, it can block or delay voice packets, causing poor call quality or dropped calls.</p>
+      </div>
+      <!-- IP Phone Q&A -->
+      <h4>IP Phone Q&amp;A</h4>
+      <div class="guide-section">
+        <p><strong>Q: What is an IP phone?</strong><br>
+        <strong>A:</strong> An IP phone is a telephone that uses the internet (IP) to send and receive calls, instead of traditional phone lines.</p>
+        <p><strong>Q: Do I need a computer to use an IP phone?</strong><br>
+        <strong>A:</strong> No, most IP phones are standalone devices that connect directly to your network.</p>
+        <p><strong>Q: Can I use a regular phone as an IP phone?</strong><br>
+        <strong>A:</strong> With an analog telephone adapter (ATA), you can connect a regular phone to a VoIP network.</p>
+        <p><strong>Q: What features do IP phones offer?</strong><br>
+        <strong>A:</strong> Voicemail, call transfer, conferencing, caller ID, HD audio, and more—often with a user-friendly display.</p>
+        <p><strong>Q: Can I use an IP phone with any VoIP provider?</strong><br>
+        <strong>A:</strong> Most IP phones support standard protocols like SIP, so they work with most providers.</p>
+      </div>
+      <!-- VoIP Server Q&A -->
+      <h4>VoIP Server (PBX/Softswitch) Q&amp;A</h4>
+      <div class="guide-section">
+        <p><strong>Q: What is a VoIP server or PBX?</strong><br>
+        <strong>A:</strong> A VoIP server (or PBX) manages call routing, voicemail, extensions, and features for a VoIP phone system.</p>
+        <p><strong>Q: Is a VoIP server hardware or software?</strong><br>
+        <strong>A:</strong> It can be either—a physical appliance, a virtual machine, or a cloud service.</p>
+        <p><strong>Q: What are popular VoIP server platforms?</strong><br>
+        <strong>A:</strong> Asterisk, FreePBX, 3CX, Cisco Unified Communications Manager, and Mitel are common examples.</p>
+        <p><strong>Q: Can a VoIP server connect to the PSTN?</strong><br>
+        <strong>A:</strong> Yes, via SIP trunks, analog gateways, or digital interfaces.</p>
+        <p><strong>Q: What features does a VoIP server provide?</strong><br>
+        <strong>A:</strong> Call routing, voicemail, IVR, call recording, conferencing, call queues, and more.</p>
+        <p><strong>Q: Can I run a VoIP server in the cloud?</strong><br>
+        <strong>A:</strong> Yes, many platforms offer cloud-hosted PBX solutions for flexibility and scalability.</p>
+      </div>
     </div>
 
     <!-- Call Flow Tab -->
