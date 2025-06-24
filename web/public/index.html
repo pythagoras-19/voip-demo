@@ -45,6 +45,7 @@
     <button class="tab" onclick="showTab('guide')">📚 Learning Guide</button>
     <button class="tab" onclick="showTab('flow')">🔄 Call Flow</button>
     <button class="tab" onclick="showTab('why')">🤔 Why use VoIP?</button>
+    <button class="tab" onclick="showTab('security')">🔒 VoIP Security</button>
   </div>
 
   <!-- Demo Tab -->
@@ -698,6 +699,294 @@ RTP Header (12 bytes):
       <h4>🎯 Why VoIP Matters Today</h4>
       <p><strong>VoIP has become the standard for modern business communication</strong> because it offers the perfect combination of cost-effectiveness, flexibility, and advanced features. Whether you're using Zoom Phone for seamless video-voice integration or Mitel for enterprise-grade reliability, VoIP represents the future of how we connect.</p>
       <p>As we continue to move toward a more connected, remote-friendly world, understanding VoIP technology becomes increasingly important for anyone working in technology, business, or communications.</p>
+    </div>
+  </div>
+
+  <!-- VoIP Security Tab -->
+  <div id="security" class="content">
+    <h2>🔒 VoIP Security</h2>
+    <p class="highlight" style="background: #fff3cd; padding: 1em; border-radius: 4px; margin-bottom: 2em;">
+      <strong>Protecting Voice Communications in the Digital Age</strong><br>
+      VoIP introduces unique security challenges that don't exist in traditional telephony. Understanding these threats and implementing proper security measures is essential for any VoIP deployment.
+    </p>
+    
+    <div class="guide-section">
+      <h3>🚨 Common VoIP Security Threats</h3>
+      
+      <h4>1. Eavesdropping & Call Interception</h4>
+      <div class="exercise">
+        <p><strong>Threat:</strong> Attackers can intercept and listen to VoIP calls by capturing RTP packets.</p>
+        <ul>
+          <li><strong>Packet Sniffing:</strong> Using tools like Wireshark to capture unencrypted RTP streams</li>
+          <li><strong>Man-in-the-Middle:</strong> Intercepting calls between endpoints</li>
+          <li><strong>Network Monitoring:</strong> ISP or network administrator access to call data</li>
+        </ul>
+        <div class="code-block">
+Example: Unencrypted RTP packet capture
+RTP Header: [Version=2, PT=0, Seq=1234, Timestamp=5678]
+Payload: [Raw audio data - easily decoded to voice]
+        </div>
+      </div>
+      
+      <h4>2. Call Hijacking & Spoofing</h4>
+      <div class="exercise">
+        <p><strong>Threat:</strong> Attackers can impersonate legitimate users or redirect calls.</p>
+        <ul>
+          <li><strong>SIP Identity Spoofing:</strong> Forging caller ID and SIP headers</li>
+          <li><strong>Call Diversion:</strong> Redirecting calls to unauthorized numbers</li>
+          <li><strong>Registration Hijacking:</strong> Taking control of user registrations</li>
+        </ul>
+        <div class="code-block">
+Malicious SIP INVITE:
+INVITE sip:ceo@company.com SIP/2.0
+From: &lt;sip:attacker@evil.com&gt;
+To: &lt;sip:ceo@company.com&gt;
+Call-ID: fake-call-id@evil.com
+        </div>
+      </div>
+      
+      <h4>3. Denial of Service (DoS) Attacks</h4>
+      <div class="exercise">
+        <p><strong>Threat:</strong> Overwhelming VoIP systems to disrupt service.</p>
+        <ul>
+          <li><strong>SIP Flooding:</strong> Sending massive volumes of SIP messages</li>
+          <li><strong>RTP Bombing:</strong> Flooding with fake RTP packets</li>
+          <li><strong>Registration Flooding:</strong> Exhausting server resources</li>
+        </ul>
+      </div>
+      
+      <h4>4. Toll Fraud & Call Abuse</h4>
+      <div class="exercise">
+        <p><strong>Threat:</strong> Unauthorized use of VoIP systems for expensive calls.</p>
+        <ul>
+          <li><strong>International Call Fraud:</strong> Making expensive overseas calls</li>
+          <li><strong>Premium Number Dialing:</strong> Calling expensive premium services</li>
+          <li><strong>Credential Theft:</strong> Stealing SIP credentials for abuse</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h3>🛡️ Security Solutions & Best Practices</h3>
+      
+      <h4>1. Encryption & Secure Protocols</h4>
+      <div class="exercise">
+        <h5>SRTP (Secure Real-time Transport Protocol)</h5>
+        <p>Encrypts RTP media streams to prevent eavesdropping:</p>
+        <ul>
+          <li><strong>AES Encryption:</strong> 128-bit or 256-bit encryption for audio data</li>
+          <li><strong>Message Authentication:</strong> HMAC-SHA1 for packet integrity</li>
+          <li><strong>Replay Protection:</strong> Prevents packet replay attacks</li>
+        </ul>
+        <div class="code-block">
+SRTP Packet Structure:
+[SRTP Header] + [Encrypted Audio Payload] + [Authentication Tag]
+Encryption: AES-128-GCM
+Authentication: HMAC-SHA1
+        </div>
+      </div>
+      
+      <div class="exercise">
+        <h5>SIPS (SIP over TLS)</h5>
+        <p>Encrypts SIP signaling messages:</p>
+        <ul>
+          <li><strong>TLS 1.2/1.3:</strong> Transport Layer Security for SIP</li>
+          <li><strong>Certificate Validation:</strong> Verify server identities</li>
+          <li><strong>End-to-End Security:</strong> Protects signaling from eavesdropping</li>
+        </ul>
+        <div class="code-block">
+SIPS URI Example:
+sips:user@domain.com:5061
+TLS Certificate: Validates server identity
+        </div>
+      </div>
+      
+      <h4>2. Authentication & Authorization</h4>
+      <div class="exercise">
+        <h5>Strong Authentication Methods</h5>
+        <ul>
+          <li><strong>Digest Authentication:</strong> Challenge-response authentication</li>
+          <li><strong>Certificate-Based:</strong> X.509 certificates for device authentication</li>
+          <li><strong>Multi-Factor Authentication:</strong> SMS, email, or app-based 2FA</li>
+          <li><strong>Biometric Authentication:</strong> Fingerprint or voice recognition</li>
+        </ul>
+        <div class="code-block">
+SIP Digest Authentication:
+WWW-Authenticate: Digest realm="sip.company.com",
+                  nonce="abc123",
+                  algorithm=MD5
+Authorization: Digest username="user",
+              realm="sip.company.com",
+              nonce="abc123",
+              response="calculated_hash"
+        </div>
+      </div>
+      
+      <h4>3. Network Security</h4>
+      <div class="exercise">
+        <h5>Network Protection Measures</h5>
+        <ul>
+          <li><strong>VLAN Segmentation:</strong> Isolate VoIP traffic from data networks</li>
+          <li><strong>Firewall Rules:</strong> Restrict SIP/RTP traffic to authorized sources</li>
+          <li><strong>Intrusion Detection:</strong> Monitor for suspicious VoIP activity</li>
+          <li><strong>Quality of Service (QoS):</strong> Prioritize VoIP traffic</li>
+        </ul>
+        <div class="code-block">
+Firewall Rules Example:
+# Allow SIP signaling
+iptables -A INPUT -p udp --dport 5060 -s 192.168.1.0/24 -j ACCEPT
+# Allow RTP media
+iptables -A INPUT -p udp --dport 10000:20000 -s 192.168.1.0/24 -j ACCEPT
+        </div>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h3>🔐 Advanced Security Features</h3>
+      
+      <h4>1. End-to-End Encryption (E2EE)</h4>
+      <div class="exercise">
+        <p><strong>Signal Protocol & ZRTP:</strong> Advanced encryption for maximum privacy</p>
+        <ul>
+          <li><strong>Perfect Forward Secrecy:</strong> Each call uses unique encryption keys</li>
+          <li><strong>Key Exchange:</strong> Diffie-Hellman key agreement</li>
+          <li><strong>Verification:</strong> Short authentication strings (SAS)</li>
+          <li><strong>No Metadata:</strong> Minimal call metadata collection</li>
+        </ul>
+        <div class="code-block">
+ZRTP Key Exchange:
+1. DH1: Initial key exchange
+2. DH2: Confirm key agreement
+3. Confirm: SAS verification
+4. Secure: Encrypted media flow
+        </div>
+      </div>
+      
+      <h4>2. Call Recording Security</h4>
+      <div class="exercise">
+        <p><strong>Secure Recording Practices:</strong> Protecting recorded calls</p>
+        <ul>
+          <li><strong>Encrypted Storage:</strong> AES-256 encryption for recordings</li>
+          <li><strong>Access Controls:</strong> Role-based permissions for playback</li>
+          <li><strong>Audit Logging:</strong> Track who accessed recordings</li>
+          <li><strong>Retention Policies:</strong> Automatic deletion after specified time</li>
+        </ul>
+      </div>
+      
+      <h4>3. Compliance & Regulatory Requirements</h4>
+      <div class="exercise">
+        <h5>Industry-Specific Requirements</h5>
+        <ul>
+          <li><strong>HIPAA (Healthcare):</strong> Patient data protection in telemedicine</li>
+          <li><strong>PCI DSS (Finance):</strong> Payment card data security</li>
+          <li><strong>SOX (Public Companies):</strong> Financial reporting compliance</li>
+          <li><strong>GDPR (EU):</strong> Personal data protection</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h3>🚨 Security Monitoring & Incident Response</h3>
+      
+      <h4>1. Real-Time Monitoring</h4>
+      <div class="exercise">
+        <h5>Security Monitoring Tools</h5>
+        <ul>
+          <li><strong>SIP Monitoring:</strong> Detect unusual call patterns</li>
+          <li><strong>Traffic Analysis:</strong> Monitor bandwidth and packet flows</li>
+          <li><strong>Anomaly Detection:</strong> AI-powered threat detection</li>
+          <li><strong>Log Analysis:</strong> Centralized logging and correlation</li>
+        </ul>
+        <div class="code-block">
+Security Alert Example:
+ALERT: Unusual call volume detected
+- 50 calls in 1 minute from single IP
+- Multiple failed authentication attempts
+- Calls to premium rate numbers
+Action: Block IP, investigate credentials
+        </div>
+      </div>
+      
+      <h4>2. Incident Response Plan</h4>
+      <div class="exercise">
+        <h5>VoIP Security Incident Response</h5>
+        <ol>
+          <li><strong>Detection:</strong> Identify security incident</li>
+          <li><strong>Containment:</strong> Isolate affected systems</li>
+          <li><strong>Investigation:</strong> Analyze attack vectors and scope</li>
+          <li><strong>Remediation:</strong> Fix vulnerabilities and restore service</li>
+          <li><strong>Recovery:</strong> Return to normal operations</li>
+          <li><strong>Lessons Learned:</strong> Update security measures</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h3>📊 Security Assessment Checklist</h3>
+      
+      <table style="width: 100%; border-collapse: collapse; margin: 1em 0;">
+        <tr style="background: #f8f9fa;">
+          <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Security Area</th>
+          <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Checklist Item</th>
+          <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">Status</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 12px;"><strong>Encryption</strong></td>
+          <td style="border: 1px solid #ddd; padding: 12px;">SRTP enabled for all calls</td>
+          <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">☐</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 12px;"><strong>Encryption</strong></td>
+          <td style="border: 1px solid #ddd; padding: 12px;">SIPS/TLS for signaling</td>
+          <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">☐</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 12px;"><strong>Authentication</strong></td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Strong password policies</td>
+          <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">☐</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 12px;"><strong>Authentication</strong></td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Multi-factor authentication</td>
+          <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">☐</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 12px;"><strong>Network</strong></td>
+          <td style="border: 1px solid #ddd; padding: 12px;">VoIP traffic isolated (VLAN)</td>
+          <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">☐</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 12px;"><strong>Network</strong></td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Firewall rules configured</td>
+          <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">☐</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 12px;"><strong>Monitoring</strong></td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Security monitoring enabled</td>
+          <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">☐</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 12px;"><strong>Monitoring</strong></td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Incident response plan</td>
+          <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">☐</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 12px;"><strong>Compliance</strong></td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Industry regulations met</td>
+          <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">☐</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 12px;"><strong>Compliance</strong></td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Regular security audits</td>
+          <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">☐</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="exercise" style="background: #e8f5e8; padding: 1.5em; border-left: 4px solid #28a745; margin: 2em 0;">
+      <h4>🔒 Security-First VoIP Design</h4>
+      <p><strong>VoIP security is not optional</strong> - it's essential for protecting sensitive communications in today's digital world. By implementing encryption, strong authentication, network segmentation, and continuous monitoring, organizations can enjoy the benefits of VoIP while maintaining the highest levels of security.</p>
+      <p>Remember: <em>"Security is a process, not a product."</em> Regular assessment, updates, and training are crucial for maintaining a secure VoIP environment.</p>
     </div>
   </div>
 
