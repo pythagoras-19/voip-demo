@@ -44,6 +44,7 @@
     <button class="tab active" onclick="showTab('demo')">📞 Interactive Demo</button>
     <button class="tab" onclick="showTab('guide')">📚 Learning Guide</button>
     <button class="tab" onclick="showTab('flow')">🔄 Call Flow</button>
+    <button class="tab" onclick="showTab('why')">🤔 Why use VoIP?</button>
   </div>
 
   <!-- Demo Tab -->
@@ -64,6 +65,27 @@
           <button onclick="hangupCall()">Hang Up</button>
           <button onclick="resetDemoCallFlow()" style="background: #e74c3c;">Reset Flow</button>
         </div>
+        
+        <!-- Audio Controls -->
+        <h3>🎤 Audio Controls</h3>
+        <div>
+          <button id="micButton" onclick="toggleMicrophone()" style="background: #e74c3c;">🎤 Enable Microphone</button>
+          <button id="audioButton" onclick="toggleAudioPlayback()" style="background: #e74c3c;" disabled>🔊 Enable Audio</button>
+        </div>
+        <div style="margin-top: 1em;">
+          <label>Volume: <input type="range" id="volumeSlider" min="0" max="100" value="50" onchange="updateVolume()"></label>
+          <span id="volumeValue">50%</span>
+        </div>
+        <div style="margin-top: 1em;">
+          <label>Codec: 
+            <select id="codecSelect" onchange="changeCodec()">
+              <option value="g711">G.711 (64 kbps)</option>
+              <option value="g729">G.729 (8 kbps)</option>
+              <option value="opus">Opus (32 kbps)</option>
+            </select>
+          </label>
+        </div>
+        
         <h3>Status</h3>
         <div id="status">Not registered</div>
         <h3>Log</h3>
@@ -148,6 +170,59 @@
             <li><span style="background: #c8e6c9; padding: 0.2em 0.4em; border-radius: 3px;">Green</span> = Sent ✓</li>
             <li><span style="background: #2196f3; padding: 0.2em 0.4em; border-radius: 3px;">Blue</span> = Received ✓</li>
           </ul>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Audio Visualization Section -->
+    <div style="margin-top: 2em; border-top: 2px solid #3498db; padding-top: 1em;">
+      <h3>🎵 Real-time Audio Visualization</h3>
+      
+      <div style="display: flex; gap: 2em;">
+        <!-- Audio Waveform -->
+        <div style="flex: 1;">
+          <h4>📊 Audio Waveform</h4>
+          <canvas id="waveformCanvas" width="400" height="150" style="border: 1px solid #ccc; background: #f8f9fa;"></canvas>
+          <div style="margin-top: 0.5em; font-size: 0.9em; color: #666;">
+            <span id="audioLevel">Level: 0%</span> | 
+            <span id="frequency">Freq: -- Hz</span> | 
+            <span id="packetRate">RTP: 0 pkts/s</span>
+          </div>
+        </div>
+        
+        <!-- RTP Packet Monitor -->
+        <div style="flex: 1;">
+          <h4>📦 RTP Packet Monitor</h4>
+          <div id="rtpMonitor" style="height: 150px; border: 1px solid #ccc; background: #f8f9fa; overflow-y: auto; padding: 0.5em; font-family: monospace; font-size: 0.8em;">
+            <div style="color: #666;">Waiting for audio data...</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Audio Statistics -->
+      <div style="margin-top: 1em; display: flex; gap: 2em;">
+        <div style="flex: 1;">
+          <h4>📈 Call Statistics</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
+            <div>
+              <strong>Packets Sent:</strong> <span id="packetsSent">0</span>
+            </div>
+            <div>
+              <strong>Packets Received:</strong> <span id="packetsReceived">0</span>
+            </div>
+            <div>
+              <strong>Packet Loss:</strong> <span id="packetLoss">0%</span>
+            </div>
+            <div>
+              <strong>Jitter:</strong> <span id="jitter">0ms</span>
+            </div>
+            <div>
+              <strong>Bandwidth:</strong> <span id="bandwidth">0 kbps</span>
+            </div>
+            <div>
+              <strong>MOS Score:</strong> <span id="mosScore">--</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -419,10 +494,282 @@ RTP Header (12 bytes):
     </div>
   </div>
 
+  <!-- Why use VoIP Tab -->
+  <div id="why" class="content">
+    <h2>🤔 Why use VoIP?</h2>
+    <p class="highlight" style="background: #e3f2fd; padding: 1em; border-radius: 4px; margin-bottom: 2em;">
+      <strong>From Alexander Graham Bell to Zoom: The Evolution of Voice Communication</strong><br>
+      Discover how we moved from traditional phone lines to internet-based calling and why VoIP has become the standard for modern business communication.
+    </p>
+    
+    <div class="guide-section">
+      <h3>📞 The History of Telephony</h3>
+      
+      <h4>The Traditional PSTN Era (1876-2000s)</h4>
+      <p>The Public Switched Telephone Network (PSTN) has been the backbone of voice communication for over a century:</p>
+      
+      <div class="code-block">
+        <strong>1876:</strong> Alexander Graham Bell patents the telephone
+        <strong>1891:</strong> First automatic telephone exchange (Strowger switch)
+        <strong>1960s:</strong> Digital switching systems introduced
+        <strong>1980s:</strong> ISDN (Integrated Services Digital Network) launched
+        <strong>1990s:</strong> Mobile cellular networks become widespread
+      </div>
+      
+      <h4>How PSTN Works</h4>
+      <ul>
+        <li><strong>Circuit-Switched:</strong> Dedicated physical connection for each call</li>
+        <li><strong>Copper Wires:</strong> Traditional phone lines use copper infrastructure</li>
+        <li><strong>Central Offices:</strong> Physical switching centers route calls</li>
+        <li><strong>Limited Features:</strong> Basic calling, voicemail, caller ID</li>
+        <li><strong>High Costs:</strong> Expensive long-distance and international calls</li>
+      </ul>
+    </div>
+
+    <div class="guide-section">
+      <h3>🌐 The Internet Revolution</h3>
+      
+      <h4>The Rise of IP Networks (1990s-Present)</h4>
+      <p>As the internet became ubiquitous, voice communication began migrating to IP networks:</p>
+      
+      <div class="code-block">
+        <strong>1995:</strong> First VoIP software (VocalTec Internet Phone)
+        <strong>1999:</strong> SIP (Session Initiation Protocol) standardized
+        <strong>2003:</strong> Skype launches, popularizing VoIP
+        <strong>2007:</strong> iPhone launches, mobile VoIP begins
+        <strong>2010s:</strong> Cloud-based VoIP services emerge
+        <strong>2020s:</strong> VoIP becomes standard for business communication
+      </div>
+      
+      <h4>Why IP Networks Won</h4>
+      <ul>
+        <li><strong>Packet-Switched:</strong> Efficient use of network bandwidth</li>
+        <li><strong>Global Infrastructure:</strong> Leverages existing internet backbone</li>
+        <li><strong>Cost-Effective:</strong> Much cheaper than traditional phone lines</li>
+        <li><strong>Feature-Rich:</strong> Easy to add new capabilities</li>
+        <li><strong>Scalable:</strong> Can handle millions of concurrent calls</li>
+      </ul>
+    </div>
+
+    <div class="guide-section">
+      <h3>💼 Modern VoIP Solutions</h3>
+      
+      <h4>Zoom Phone</h4>
+      <div class="exercise">
+        <p><strong>Zoom Phone</strong> represents the modern evolution of VoIP for business:</p>
+        <ul>
+          <li><strong>Cloud-Native:</strong> Built on Zoom's global cloud infrastructure</li>
+          <li><strong>Unified Communications:</strong> Integrates video, voice, chat, and meetings</li>
+          <li><strong>Global Reach:</strong> Available in 40+ countries with local phone numbers</li>
+          <li><strong>Advanced Features:</strong> Call recording, analytics, auto-attendant, call routing</li>
+          <li><strong>Mobile-First:</strong> Works seamlessly across desktop, mobile, and conference rooms</li>
+          <li><strong>Security:</strong> Enterprise-grade encryption and compliance (HIPAA, SOC 2, etc.)</li>
+        </ul>
+        <p><em>"Zoom Phone has transformed how businesses communicate, combining the reliability of traditional telephony with the flexibility of modern cloud technology."</em></p>
+      </div>
+      
+      <h4>Mitel</h4>
+      <div class="exercise">
+        <p><strong>Mitel</strong> is a pioneer in business communications with decades of experience:</p>
+        <ul>
+          <li><strong>Hybrid Solutions:</strong> On-premises, cloud, and hybrid deployment options</li>
+          <li><strong>Enterprise Focus:</strong> Designed for large organizations and contact centers</li>
+          <li><strong>Integration Ecosystem:</strong> Connects with CRM, ERP, and business applications</li>
+          <li><strong>Contact Center:</strong> Advanced call center features and analytics</li>
+          <li><strong>Global Presence:</strong> Serving 100+ countries with local support</li>
+          <li><strong>Compliance:</strong> Meets industry-specific regulatory requirements</li>
+        </ul>
+        <p><em>"Mitel's solutions bridge the gap between legacy systems and modern cloud communications, helping enterprises transition smoothly to VoIP."</em></p>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h3>📊 VoIP vs PSTN Comparison</h3>
+      
+      <table style="width: 100%; border-collapse: collapse; margin: 1em 0;">
+        <tr style="background: #f8f9fa;">
+          <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Feature</th>
+          <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Traditional PSTN</th>
+          <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Modern VoIP</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 12px;"><strong>Infrastructure</strong></td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Dedicated copper lines</td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Internet/network connection</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 12px;"><strong>Cost</strong></td>
+          <td style="border: 1px solid #ddd; padding: 12px;">High per-minute rates</td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Low flat-rate pricing</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 12px;"><strong>Scalability</strong></td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Limited by physical lines</td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Unlimited virtual lines</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 12px;"><strong>Features</strong></td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Basic calling only</td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Rich feature set</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 12px;"><strong>Mobility</strong></td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Fixed location</td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Work from anywhere</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 12px;"><strong>Integration</strong></td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Limited</td>
+          <td style="border: 1px solid #ddd; padding: 12px;">Extensive APIs</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="guide-section">
+      <h3>🚀 Key Benefits of VoIP</h3>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2em; margin: 1em 0;">
+        <div class="exercise">
+          <h4>💰 Cost Savings</h4>
+          <ul>
+            <li><strong>50-90% reduction</strong> in long-distance costs</li>
+            <li><strong>Elimination</strong> of separate phone and internet bills</li>
+            <li><strong>Free calls</strong> between company locations</li>
+            <li><strong>Reduced hardware</strong> and maintenance costs</li>
+          </ul>
+        </div>
+        
+        <div class="exercise">
+          <h4>🌍 Global Reach</h4>
+          <ul>
+            <li><strong>Local numbers</strong> in multiple countries</li>
+            <li><strong>International calling</strong> at local rates</li>
+            <li><strong>Remote work</strong> from anywhere</li>
+            <li><strong>Global teams</strong> with unified communications</li>
+          </ul>
+        </div>
+        
+        <div class="exercise">
+          <h4>⚡ Advanced Features</h4>
+          <ul>
+            <li><strong>Auto-attendant</strong> and call routing</li>
+            <li><strong>Call recording</strong> and analytics</li>
+            <li><strong>Video calling</strong> integration</li>
+            <li><strong>CRM integration</strong> and call tracking</li>
+          </ul>
+        </div>
+        
+        <div class="exercise">
+          <h4>🔧 Easy Management</h4>
+          <ul>
+            <li><strong>Web-based</strong> administration</li>
+            <li><strong>Instant scaling</strong> up or down</li>
+            <li><strong>Real-time</strong> monitoring and reporting</li>
+            <li><strong>Automatic updates</strong> and maintenance</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h3>📈 The Future of Voice Communication</h3>
+      
+      <h4>Emerging Trends</h4>
+      <ul>
+        <li><strong>5G Integration:</strong> Ultra-low latency voice over 5G networks</li>
+        <li><strong>AI-Powered Features:</strong> Voice analytics, sentiment analysis, automated transcription</li>
+        <li><strong>WebRTC:</strong> Browser-based calling without plugins</li>
+        <li><strong>IoT Integration:</strong> Voice control for smart devices</li>
+        <li><strong>Edge Computing:</strong> Reduced latency through distributed processing</li>
+      </ul>
+      
+      <h4>Industry Adoption</h4>
+      <p>VoIP adoption continues to accelerate across all sectors:</p>
+      <ul>
+        <li><strong>Healthcare:</strong> HIPAA-compliant VoIP for telemedicine</li>
+        <li><strong>Education:</strong> Virtual classrooms and remote learning</li>
+        <li><strong>Finance:</strong> Secure voice communication for trading floors</li>
+        <li><strong>Government:</strong> Cost-effective communication for public services</li>
+        <li><strong>Retail:</strong> Unified communications for customer service</li>
+      </ul>
+    </div>
+
+    <div class="exercise" style="background: #e8f5e8; padding: 1.5em; border-left: 4px solid #28a745; margin: 2em 0;">
+      <h4>🎯 Why VoIP Matters Today</h4>
+      <p><strong>VoIP has become the standard for modern business communication</strong> because it offers the perfect combination of cost-effectiveness, flexibility, and advanced features. Whether you're using Zoom Phone for seamless video-voice integration or Mitel for enterprise-grade reliability, VoIP represents the future of how we connect.</p>
+      <p>As we continue to move toward a more connected, remote-friendly world, understanding VoIP technology becomes increasingly important for anyone working in technology, business, or communications.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer style="background: #2c3e50; color: white; padding: 2em; margin-top: 3em; text-align: center;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1em;">
+        <div style="text-align: left;">
+          <h4 style="margin: 0 0 0.5em 0; color: #3498db;">🎤 VoIP Learning Platform</h4>
+          <p style="margin: 0; font-size: 0.9em; opacity: 0.8;">
+            Interactive Voice over IP demonstration and learning tool
+          </p>
+        </div>
+        
+        <div style="text-align: center;">
+          <p style="margin: 0; font-size: 0.9em;">
+            Built with ❤️ for VoIP education
+          </p>
+          <p style="margin: 0.5em 0 0 0; font-size: 0.8em; opacity: 0.7;">
+            SIP • RTP • G.711 • WebRTC • Node.js
+          </p>
+        </div>
+        
+        <div style="text-align: right;">
+          <p style="margin: 0; font-size: 0.9em;">
+            © 2024 Matt C. All rights reserved.
+          </p>
+          <p style="margin: 0.5em 0 0 0; font-size: 0.8em; opacity: 0.7;">
+            <a href="https://github.com/pythagoras-19/voip-demo" target="_blank" style="color: #3498db; text-decoration: none;">View on GitHub</a>
+          </p>
+        </div>
+      </div>
+      
+      <div style="border-top: 1px solid #34495e; margin-top: 1.5em; padding-top: 1em; font-size: 0.8em; opacity: 0.6;">
+        <p style="margin: 0;">
+          This educational tool demonstrates VoIP protocols including SIP signaling, RTP media streaming, and audio codecs. 
+          Use responsibly and in accordance with applicable laws and regulations.
+        </p>
+      </div>
+    </div>
+  </footer>
+
   <script>
     let registered = false;
     let inCall = false;
     let callStep = 0;
+    
+    // Audio variables
+    let audioContext;
+    let microphone;
+    let audioStream;
+    let isMicrophoneEnabled = false;
+    let isAudioEnabled = false;
+    let audioAnalyser;
+    let dataArray;
+    let animationId;
+    let rtpSequenceNumber = 0;
+    let rtpTimestamp = 0;
+    let packetsSent = 0;
+    let packetsReceived = 0;
+    let lastPacketTime = 0;
+    let packetLoss = 0;
+    let jitter = 0;
+    let currentCodec = 'g711';
+    let volume = 0.5;
+    
+    // Audio codec bitrates
+    const codecBitrates = {
+      g711: 64,
+      g729: 8,
+      opus: 32
+    };
     
     function showTab(tabName) {
       // Hide all content
@@ -478,6 +825,295 @@ RTP Header (12 bytes):
       ['demo-register', 'demo-register-ok', 'demo-invite', 'demo-trying', 'demo-ringing', 'demo-ok', 'demo-ack', 'demo-bye', 'demo-bye-ok'].forEach(id => {
         updateMessage(id, 'pending');
       });
+    }
+    
+    // Audio Functions
+    async function toggleMicrophone() {
+      if (!isMicrophoneEnabled) {
+        try {
+          audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          microphone = audioContext.createMediaStreamSource(audioStream);
+          audioAnalyser = audioContext.createAnalyser();
+          audioAnalyser.fftSize = 256;
+          
+          microphone.connect(audioAnalyser);
+          dataArray = new Uint8Array(audioAnalyser.frequencyBinCount);
+          
+          isMicrophoneEnabled = true;
+          document.getElementById('micButton').textContent = '🎤 Disable Microphone';
+          document.getElementById('micButton').style.background = '#27ae60';
+          document.getElementById('audioButton').disabled = false;
+          
+          log('Microphone enabled - Audio capture started');
+          startAudioVisualization();
+        } catch (error) {
+          log('Error accessing microphone: ' + error.message);
+        }
+      } else {
+        if (audioStream) {
+          audioStream.getTracks().forEach(track => track.stop());
+        }
+        if (audioContext) {
+          audioContext.close();
+        }
+        isMicrophoneEnabled = false;
+        document.getElementById('micButton').textContent = '🎤 Enable Microphone';
+        document.getElementById('micButton').style.background = '#e74c3c';
+        document.getElementById('audioButton').disabled = true;
+        isAudioEnabled = false;
+        document.getElementById('audioButton').textContent = '🔊 Enable Audio';
+        document.getElementById('audioButton').style.background = '#e74c3c';
+        
+        log('Microphone disabled');
+        stopAudioVisualization();
+      }
+    }
+    
+    function toggleAudioPlayback() {
+      if (!isAudioEnabled && isMicrophoneEnabled) {
+        isAudioEnabled = true;
+        document.getElementById('audioButton').textContent = '🔊 Disable Audio';
+        document.getElementById('audioButton').style.background = '#27ae60';
+        log('Audio playback enabled - RTP streaming started');
+        startRTPStreaming();
+      } else {
+        isAudioEnabled = false;
+        document.getElementById('audioButton').textContent = '🔊 Enable Audio';
+        document.getElementById('audioButton').style.background = '#e74c3c';
+        log('Audio playback disabled');
+        stopRTPStreaming();
+      }
+    }
+    
+    function updateVolume() {
+      volume = document.getElementById('volumeSlider').value / 100;
+      document.getElementById('volumeValue').textContent = document.getElementById('volumeSlider').value + '%';
+    }
+    
+    function changeCodec() {
+      currentCodec = document.getElementById('codecSelect').value;
+      log(`Codec changed to ${currentCodec.toUpperCase()} (${codecBitrates[currentCodec]} kbps)`);
+      updateBandwidth();
+    }
+    
+    function startAudioVisualization() {
+      const canvas = document.getElementById('waveformCanvas');
+      const ctx = canvas.getContext('2d');
+      
+      function draw() {
+        if (!isMicrophoneEnabled) return;
+        
+        animationId = requestAnimationFrame(draw);
+        audioAnalyser.getByteTimeDomainData(dataArray);
+        
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#3498db';
+        ctx.beginPath();
+        
+        const sliceWidth = canvas.width / dataArray.length;
+        let x = 0;
+        let audioLevel = 0;
+        
+        for (let i = 0; i < dataArray.length; i++) {
+          const v = dataArray[i] / 128.0;
+          const y = v * canvas.height / 2;
+          
+          if (i === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+          
+          audioLevel += Math.abs(v - 1);
+          x += sliceWidth;
+        }
+        
+        ctx.lineTo(canvas.width, canvas.height / 2);
+        ctx.stroke();
+        
+        // Update audio level display
+        const avgLevel = (audioLevel / dataArray.length) * 100;
+        document.getElementById('audioLevel').textContent = `Level: ${Math.round(avgLevel)}%`;
+        
+        // Real frequency analysis
+        const frequencyData = new Uint8Array(audioAnalyser.frequencyBinCount);
+        audioAnalyser.getByteFrequencyData(frequencyData);
+        
+        // Find dominant frequency
+        let maxIndex = 0;
+        let maxValue = 0;
+        for (let i = 0; i < frequencyData.length; i++) {
+          if (frequencyData[i] > maxValue) {
+            maxValue = frequencyData[i];
+            maxIndex = i;
+          }
+        }
+        
+        // Convert bin index to frequency (assuming 44.1kHz sample rate)
+        const sampleRate = audioContext.sampleRate;
+        const dominantFreq = Math.round((maxIndex * sampleRate) / (audioAnalyser.fftSize * 2));
+        
+        // Only show frequency if there's significant audio activity
+        if (avgLevel > 5) {
+          document.getElementById('frequency').textContent = `Freq: ${dominantFreq} Hz`;
+        } else {
+          document.getElementById('frequency').textContent = 'Freq: -- Hz';
+        }
+      }
+      
+      draw();
+    }
+    
+    function stopAudioVisualization() {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+      const canvas = document.getElementById('waveformCanvas');
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#f8f9fa';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      document.getElementById('audioLevel').textContent = 'Level: 0%';
+      document.getElementById('frequency').textContent = 'Freq: -- Hz';
+    }
+    
+    function startRTPStreaming() {
+      if (!isAudioEnabled) return;
+      
+      function sendRTPPacket() {
+        if (!isAudioEnabled) return;
+        
+        const now = Date.now();
+        const packetSize = Math.floor(Math.random() * 160) + 20; // 20-180 bytes
+        const payload = generateAudioPayload(packetSize);
+        
+        // Create RTP packet
+        const rtpPacket = {
+          version: 2,
+          padding: 0,
+          extension: 0,
+          csrcCount: 0,
+          marker: 0,
+          payloadType: getPayloadType(currentCodec),
+          sequenceNumber: rtpSequenceNumber++,
+          timestamp: rtpTimestamp,
+          ssrc: 0x12345678,
+          payload: payload,
+          size: packetSize + 12 // RTP header (12 bytes) + payload
+        };
+        
+        rtpTimestamp += 160; // 20ms at 8kHz
+        packetsSent++;
+        
+        // Simulate packet loss (1% chance)
+        if (Math.random() > 0.01) {
+          packetsReceived++;
+          addRTPPacketToMonitor(rtpPacket, 'received');
+        } else {
+          packetLoss++;
+          addRTPPacketToMonitor(rtpPacket, 'lost');
+        }
+        
+        // Calculate jitter
+        if (lastPacketTime > 0) {
+          const delay = now - lastPacketTime;
+          jitter = jitter * 0.9 + Math.abs(delay - 20) * 0.1; // Target 20ms
+        }
+        lastPacketTime = now;
+        
+        updateStatistics();
+        
+        // Continue streaming
+        setTimeout(sendRTPPacket, 20); // 50 packets per second
+      }
+      
+      sendRTPPacket();
+    }
+    
+    function stopRTPStreaming() {
+      // This will stop when isAudioEnabled becomes false
+    }
+    
+    function generateAudioPayload(size) {
+      // Generate random audio-like data
+      const payload = new Uint8Array(size);
+      for (let i = 0; i < size; i++) {
+        payload[i] = Math.floor(Math.random() * 256);
+      }
+      return payload;
+    }
+    
+    function getPayloadType(codec) {
+      const payloadTypes = {
+        g711: 0,
+        g729: 18,
+        opus: 111
+      };
+      return payloadTypes[codec] || 0;
+    }
+    
+    function addRTPPacketToMonitor(packet, status) {
+      const monitor = document.getElementById('rtpMonitor');
+      const timestamp = new Date().toLocaleTimeString();
+      const statusColor = status === 'received' ? '#27ae60' : '#e74c3c';
+      const statusText = status === 'received' ? '✓' : '✗';
+      
+      const packetInfo = `
+        <div style="color: ${statusColor}; margin-bottom: 0.2em;">
+          [${timestamp}] RTP ${statusText} Seq:${packet.sequenceNumber} 
+          PT:${packet.payloadType} Size:${packet.size} bytes
+        </div>
+      `;
+      
+      monitor.innerHTML = packetInfo + monitor.innerHTML;
+      
+      // Keep only last 10 packets
+      const lines = monitor.innerHTML.split('<div');
+      if (lines.length > 11) {
+        monitor.innerHTML = lines.slice(0, 11).join('<div');
+      }
+      
+      // Update packet rate
+      const packetRate = Math.round(packetsSent / (Date.now() - lastPacketTime) * 1000);
+      document.getElementById('packetRate').textContent = `RTP: ${packetRate} pkts/s`;
+    }
+    
+    function updateStatistics() {
+      document.getElementById('packetsSent').textContent = packetsSent;
+      document.getElementById('packetsReceived').textContent = packetsReceived;
+      document.getElementById('packetLoss').textContent = packetsSent > 0 ? 
+        Math.round((packetLoss / packetsSent) * 100) + '%' : '0%';
+      document.getElementById('jitter').textContent = Math.round(jitter) + 'ms';
+      updateBandwidth();
+      updateMOSScore();
+    }
+    
+    function updateBandwidth() {
+      const bitrate = codecBitrates[currentCodec];
+      const overhead = 0.1; // 10% overhead for RTP/UDP/IP headers
+      const totalBitrate = bitrate * (1 + overhead);
+      document.getElementById('bandwidth').textContent = Math.round(totalBitrate) + ' kbps';
+    }
+    
+    function updateMOSScore() {
+      // Calculate MOS based on packet loss and jitter
+      let mos = 5.0;
+      
+      // Reduce MOS based on packet loss
+      const lossRate = packetsSent > 0 ? (packetLoss / packetsSent) : 0;
+      if (lossRate > 0.05) mos -= 2.0; // >5% loss
+      else if (lossRate > 0.02) mos -= 1.0; // >2% loss
+      else if (lossRate > 0.01) mos -= 0.5; // >1% loss
+      
+      // Reduce MOS based on jitter
+      if (jitter > 100) mos -= 1.5; // >100ms jitter
+      else if (jitter > 50) mos -= 0.8; // >50ms jitter
+      else if (jitter > 20) mos -= 0.3; // >20ms jitter
+      
+      mos = Math.max(1.0, Math.min(5.0, mos));
+      document.getElementById('mosScore').textContent = mos.toFixed(1);
     }
     
     function registerUser() {
