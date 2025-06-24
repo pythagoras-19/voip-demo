@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoIP Learning Platform</title>
+  <style>
+    body { font-family: sans-serif; margin: 0; padding: 0; }
+    .header { background: #2c3e50; color: white; padding: 1em; text-align: center; }
+    .tabs { display: flex; background: #34495e; }
+    .tab { flex: 1; padding: 1em; background: #34495e; color: white; border: none; cursor: pointer; }
+    .tab.active { background: #3498db; }
+    .tab:hover { background: #2980b9; }
+    .content { padding: 2em; display: none; }
+    .content.active { display: block; }
+    #log { background: #f4f4f4; padding: 1em; height: 200px; overflow-y: auto; border: 1px solid #ccc; }
+    input, button { margin: 0.5em 0; padding: 0.5em; }
+    button { background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #2980b9; }
+    .call-flow { margin: 2em 0; }
+    .flow-line { display: flex; align-items: center; margin: 0.5em 0; }
+    .client, .server { width: 100px; text-align: center; font-weight: bold; }
+    .arrow { flex: 1; text-align: center; }
+    .message { background: #e3f2fd; padding: 0.5em; border-radius: 4px; margin: 0 1em; }
+    .message.sent { background: #c8e6c9; }
+    .message.received { background: #2196f3; }
+    .message.pending { background: #fff3e0; opacity: 0.6; }
+    .timeline { font-size: 0.8em; color: #666; }
+    .guide-section { margin: 2em 0; }
+    .guide-section h3 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 0.5em; }
+    .code-block { background: #f8f9fa; padding: 1em; border-left: 4px solid #3498db; margin: 1em 0; font-family: monospace; }
+    .highlight { background: #fff3cd; padding: 0.2em 0.4em; border-radius: 3px; }
+    .exercise { background: #e8f5e8; padding: 1em; border-left: 4px solid #28a745; margin: 1em 0; }
+    .exercise h4 { color: #28a745; margin-top: 0; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🎤 VoIP Learning Platform</h1>
+    <p>Learn Voice over IP internals through interactive demos and visualizations</p>
+  </div>
+  
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('demo')">📞 Interactive Demo</button>
+    <button class="tab" onclick="showTab('guide')">📚 Learning Guide</button>
+    <button class="tab" onclick="showTab('flow')">🔄 Call Flow</button>
+  </div>
+
+  <!-- Demo Tab -->
+  <div id="demo" class="content active">
+    <h2>VoIP Client Demo</h2>
+    
+    <div style="display: flex; gap: 2em;">
+      <!-- Left side: Controls -->
+      <div style="flex: 1;">
+        <h3>Controls</h3>
+        <div>
+          <label>Username: <input id="username" value="alice"></label>
+          <button onclick="registerUser()">Register</button>
+        </div>
+        <div>
+          <label>Call User: <input id="target" value="bob"></label>
+          <button onclick="makeCall()">Call</button>
+          <button onclick="hangupCall()">Hang Up</button>
+          <button onclick="resetDemoCallFlow()" style="background: #e74c3c;">Reset Flow</button>
+        </div>
+        <h3>Status</h3>
+        <div id="status">Not registered</div>
+        <h3>Log</h3>
+        <div id="log"></div>
+      </div>
+      
+      <!-- Right side: Call Flow Diagram -->
+      <div style="flex: 1;">
+        <h3>Live Call Flow</h3>
+        <p>Watch the SIP messages flow in real-time as you interact!</p>
+        
+        <div id="demoCallFlow" class="call-flow">
+          <div class="flow-line">
+            <div class="client">Client</div>
+            <div class="arrow">→</div>
+            <div class="message pending" id="demo-register">REGISTER</div>
+            <div class="arrow">→</div>
+            <div class="server">Server</div>
+          </div>
+          <div class="flow-line">
+            <div class="client">Client</div>
+            <div class="arrow">←</div>
+            <div class="message pending" id="demo-register-ok">200 OK</div>
+            <div class="arrow">←</div>
+            <div class="server">Server</div>
+          </div>
+          <div class="flow-line">
+            <div class="client">Client</div>
+            <div class="arrow">→</div>
+            <div class="message pending" id="demo-invite">INVITE</div>
+            <div class="arrow">→</div>
+            <div class="server">Server</div>
+          </div>
+          <div class="flow-line">
+            <div class="client">Client</div>
+            <div class="arrow">←</div>
+            <div class="message pending" id="demo-trying">100 Trying</div>
+            <div class="arrow">←</div>
+            <div class="server">Server</div>
+          </div>
+          <div class="flow-line">
+            <div class="client">Client</div>
+            <div class="arrow">←</div>
+            <div class="message pending" id="demo-ringing">180 Ringing</div>
+            <div class="arrow">←</div>
+            <div class="server">Server</div>
+          </div>
+          <div class="flow-line">
+            <div class="client">Client</div>
+            <div class="arrow">←</div>
+            <div class="message pending" id="demo-ok">200 OK</div>
+            <div class="arrow">←</div>
+            <div class="server">Server</div>
+          </div>
+          <div class="flow-line">
+            <div class="client">Client</div>
+            <div class="arrow">→</div>
+            <div class="message pending" id="demo-ack">ACK</div>
+            <div class="arrow">→</div>
+            <div class="server">Server</div>
+          </div>
+          <div class="flow-line">
+            <div class="client">Client</div>
+            <div class="arrow">→</div>
+            <div class="message pending" id="demo-bye">BYE</div>
+            <div class="arrow">→</div>
+            <div class="server">Server</div>
+          </div>
+          <div class="flow-line">
+            <div class="client">Client</div>
+            <div class="arrow">←</div>
+            <div class="message pending" id="demo-bye-ok">200 OK</div>
+            <div class="arrow">←</div>
+            <div class="server">Server</div>
+          </div>
+        </div>
+
+        <div class="exercise" style="margin-top: 1em;">
+          <h4>Message Status Legend</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li><span style="background: #fff3e0; padding: 0.2em 0.4em; border-radius: 3px;">Gray</span> = Pending</li>
+            <li><span style="background: #c8e6c9; padding: 0.2em 0.4em; border-radius: 3px;">Green</span> = Sent ✓</li>
+            <li><span style="background: #2196f3; padding: 0.2em 0.4em; border-radius: 3px;">Blue</span> = Received ✓</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Learning Guide Tab -->
+  <div id="guide" class="content">
+    <h2>VoIP Learning Guide</h2>
+    
+    <div class="guide-section">
+      <h3>What is VoIP?</h3>
+      <p>Voice over IP (VoIP) is a technology that allows voice communication over IP networks. Unlike traditional circuit-switched telephony, VoIP uses packet-switched networks, which offers several advantages:</p>
+      <ul>
+        <li><strong>Cost Efficiency:</strong> Uses existing IP infrastructure</li>
+        <li><strong>Flexibility:</strong> Supports various media types (voice, video, data)</li>
+        <li><strong>Scalability:</strong> Easy to add new features and users</li>
+        <li><strong>Integration:</strong> Can integrate with other IP-based services</li>
+      </ul>
+    </div>
+
+    <div class="guide-section">
+      <h3>Key Components</h3>
+      <ol>
+        <li><strong>SIP (Session Initiation Protocol):</strong> Signaling protocol for call setup/teardown</li>
+        <li><strong>RTP (Real-time Transport Protocol):</strong> Media streaming protocol</li>
+        <li><strong>Audio Codecs:</strong> Compression algorithms for efficient bandwidth usage</li>
+        <li><strong>Network Transport:</strong> UDP/TCP for packet delivery</li>
+      </ol>
+    </div>
+
+    <div class="guide-section">
+      <h3>SIP Protocol Deep Dive</h3>
+      <p>SIP is the signaling protocol used to establish, modify, and terminate multimedia sessions.</p>
+      
+      <h4>SIP Message Structure</h4>
+      <div class="code-block">
+SIP/2.0 200 OK                    # Status line (response)
+Via: SIP/2.0/UDP 192.168.1.100    # Headers
+From: &lt;sip:alice@example.com&gt;
+To: &lt;sip:bob@example.com&gt;
+Call-ID: abc123@192.168.1.100
+CSeq: 1 INVITE
+Content-Length: 0
+
+# Empty line separates headers from body
+# Message body (optional)
+      </div>
+
+      <h4>SIP Methods</h4>
+      <ul>
+        <li><span class="highlight">INVITE:</span> Initiate a call</li>
+        <li><span class="highlight">ACK:</span> Confirm call establishment</li>
+        <li><span class="highlight">BYE:</span> Terminate a call</li>
+        <li><span class="highlight">CANCEL:</span> Cancel a pending request</li>
+        <li><span class="highlight">REGISTER:</span> Register with a server</li>
+        <li><span class="highlight">OPTIONS:</span> Query server capabilities</li>
+      </ul>
+
+      <h4>SIP Responses</h4>
+      <ul>
+        <li><span class="highlight">1xx:</span> Provisional (100 Trying, 180 Ringing)</li>
+        <li><span class="highlight">2xx:</span> Success (200 OK)</li>
+        <li><span class="highlight">3xx:</span> Redirection (302 Moved Temporarily)</li>
+        <li><span class="highlight">4xx:</span> Client Error (404 Not Found, 486 Busy)</li>
+        <li><span class="highlight">5xx:</span> Server Error (500 Internal Server Error)</li>
+        <li><span class="highlight">6xx:</span> Global Failure (600 Busy Everywhere)</li>
+      </ul>
+    </div>
+
+    <div class="guide-section">
+      <h3>RTP Media Streaming</h3>
+      <p>RTP (Real-time Transport Protocol) is used for delivering audio and video over IP networks.</p>
+      
+      <h4>RTP Packet Structure</h4>
+      <div class="code-block">
+RTP Header (12 bytes):
++----------------+----------------+
+| V=2 |P|X|  CC   |M|     PT      |
++----------------+----------------+
+|        sequence number          |
++----------------+----------------+
+|           timestamp             |
++----------------+----------------+
+|           synchronization source identifier (SSRC)  |
++----------------+----------------+
+|            contributing source (CSRC) identifiers   |
+|                             ....                    |
++----------------+----------------+
+|                payload                               |
++----------------+----------------+
+      </div>
+
+      <h4>Key RTP Concepts</h4>
+      <ol>
+        <li><strong>Sequence Numbers:</strong> Detect packet loss and reordering</li>
+        <li><strong>Timestamps:</strong> Synchronize audio playback</li>
+        <li><strong>SSRC:</strong> Identify the source of the stream</li>
+        <li><strong>Payload Type:</strong> Indicate the codec being used</li>
+        <li><strong>Marker Bit:</strong> Indicate frame boundaries</li>
+      </ol>
+    </div>
+
+    <div class="guide-section">
+      <h3>Audio Codecs</h3>
+      <p>Audio codecs compress audio data to reduce bandwidth usage.</p>
+      
+      <h4>G.711 Codec</h4>
+      <ul>
+        <li><strong>Bit Rate:</strong> 64 kbps</li>
+        <li><strong>Sample Rate:</strong> 8 kHz</li>
+        <li><strong>Compression:</strong> 2:1 (16-bit PCM → 8-bit)</li>
+        <li><strong>Quality:</strong> Good for voice</li>
+        <li><strong>Complexity:</strong> Low</li>
+      </ul>
+
+      <h4>Codec Comparison</h4>
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr style="background: #f8f9fa;">
+          <th style="border: 1px solid #ddd; padding: 8px;">Codec</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">Bit Rate</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">Quality</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">Use Case</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">G.711</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">64 kbps</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Good</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Traditional VoIP</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">G.729</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">8 kbps</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Good</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Bandwidth-constrained</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">Opus</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">6-510 kbps</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Excellent</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Modern applications</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="guide-section">
+      <h3>Hands-on Exercises</h3>
+      
+      <div class="exercise">
+        <h4>Exercise 1: Basic Call Flow</h4>
+        <p>1. Go to the Interactive Demo tab</p>
+        <p>2. Register as a user (e.g., "alice")</p>
+        <p>3. Make a call to another user (e.g., "bob")</p>
+        <p>4. Observe the SIP message flow in the Call Flow tab</p>
+        <p>5. Hang up the call</p>
+      </div>
+
+      <div class="exercise">
+        <h4>Exercise 2: Analyze SIP Messages</h4>
+        <p>1. Start the server: <code>npm run server</code></p>
+        <p>2. Use the SIP debugger: <code>npm run debugger</code></p>
+        <p>3. Make a call from the web client</p>
+        <p>4. Observe the SIP messages in the debugger output</p>
+        <p>5. Identify each message type and purpose</p>
+      </div>
+
+      <div class="exercise">
+        <h4>Exercise 3: Codec Testing</h4>
+        <p>1. Run the tests: <code>npm test</code></p>
+        <p>2. Examine the G.711 encoding/decoding test</p>
+        <p>3. Understand how audio compression works</p>
+        <p>4. Try different audio samples</p>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h3>Next Steps</h3>
+      <p>After completing this guide, you should:</p>
+      <ol>
+        <li><strong>Understand VoIP Fundamentals:</strong> Know how SIP and RTP work</li>
+        <li><strong>Analyze Call Flows:</strong> Be able to trace SIP message exchanges</li>
+        <li><strong>Debug Issues:</strong> Use tools to troubleshoot problems</li>
+        <li><strong>Extend Functionality:</strong> Add new features to the system</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Call Flow Tab -->
+  <div id="flow" class="content">
+    <h2>SIP Call Flow Visualization</h2>
+    <p>Watch the actual SIP messages flow between client and server in real-time! This visualization is synchronized with the Interactive Demo tab.</p>
+    
+    <div id="callFlow" class="call-flow">
+      <div class="flow-line">
+        <div class="client">Client</div>
+        <div class="arrow">→</div>
+        <div class="message pending" id="register">REGISTER</div>
+        <div class="arrow">→</div>
+        <div class="server">Server</div>
+      </div>
+      <div class="flow-line">
+        <div class="client">Client</div>
+        <div class="arrow">←</div>
+        <div class="message pending" id="register-ok">200 OK</div>
+        <div class="arrow">←</div>
+        <div class="server">Server</div>
+      </div>
+      <div class="flow-line">
+        <div class="client">Client</div>
+        <div class="arrow">→</div>
+        <div class="message pending" id="invite">INVITE</div>
+        <div class="arrow">→</div>
+        <div class="server">Server</div>
+      </div>
+      <div class="flow-line">
+        <div class="client">Client</div>
+        <div class="arrow">←</div>
+        <div class="message pending" id="trying">100 Trying</div>
+        <div class="arrow">←</div>
+        <div class="server">Server</div>
+      </div>
+      <div class="flow-line">
+        <div class="client">Client</div>
+        <div class="arrow">←</div>
+        <div class="message pending" id="ringing">180 Ringing</div>
+        <div class="arrow">←</div>
+        <div class="server">Server</div>
+      </div>
+      <div class="flow-line">
+        <div class="client">Client</div>
+        <div class="arrow">←</div>
+        <div class="message pending" id="ok">200 OK</div>
+        <div class="arrow">←</div>
+        <div class="server">Server</div>
+      </div>
+      <div class="flow-line">
+        <div class="client">Client</div>
+        <div class="arrow">→</div>
+        <div class="message pending" id="ack">ACK</div>
+        <div class="arrow">→</div>
+        <div class="server">Server</div>
+      </div>
+      <div class="flow-line">
+        <div class="client">Client</div>
+        <div class="arrow">→</div>
+        <div class="message pending" id="bye">BYE</div>
+        <div class="arrow">→</div>
+        <div class="server">Server</div>
+      </div>
+      <div class="flow-line">
+        <div class="client">Client</div>
+        <div class="arrow">←</div>
+        <div class="message pending" id="bye-ok">200 OK</div>
+        <div class="arrow">←</div>
+        <div class="server">Server</div>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <h4>How to Use This Visualization</h4>
+      <p>1. Go to the Interactive Demo tab</p>
+      <p>2. Register a user and make a call</p>
+      <p>3. Watch the messages light up in real-time:</p>
+      <ul>
+        <li><span style="background: #fff3e0;">Gray</span> = Pending</li>
+        <li><span style="background: #c8e6c9;">Green</span> = Sent ✓</li>
+        <li><span style="background: #2196f3;">Blue</span> = Received ✓</li>
+      </ul>
+      <p>4. Observe the timing and sequence of SIP messages</p>
+    </div>
+  </div>
+
+  <script>
+    let registered = false;
+    let inCall = false;
+    let callStep = 0;
+    
+    function showTab(tabName) {
+      // Hide all content
+      document.querySelectorAll('.content').forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      // Remove active class from all tabs
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Show selected content and activate tab
+      document.getElementById(tabName).classList.add('active');
+      event.target.classList.add('active');
+    }
+    
+    function log(msg) {
+      const logDiv = document.getElementById('log');
+      const timestamp = new Date().toLocaleTimeString();
+      logDiv.innerHTML += `[${timestamp}] ${msg}<br>`;
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+    
+    function setStatus(msg) {
+      document.getElementById('status').textContent = msg;
+    }
+    
+    function updateMessage(id, status) {
+      const msg = document.getElementById(id);
+      if (msg) {
+        msg.className = `message ${status}`;
+        if (status === 'sent') {
+          msg.innerHTML = msg.textContent + ' ✓';
+        } else if (status === 'received') {
+          msg.innerHTML = msg.textContent + ' ✓';
+        }
+      }
+      
+      // Also update the original call flow tab if it exists
+      const originalMsg = document.getElementById(id.replace('demo-', ''));
+      if (originalMsg) {
+        originalMsg.className = `message ${status}`;
+        if (status === 'sent') {
+          originalMsg.innerHTML = originalMsg.textContent + ' ✓';
+        } else if (status === 'received') {
+          originalMsg.innerHTML = originalMsg.textContent + ' ✓';
+        }
+      }
+    }
+    
+    function resetDemoCallFlow() {
+      ['demo-register', 'demo-register-ok', 'demo-invite', 'demo-trying', 'demo-ringing', 'demo-ok', 'demo-ack', 'demo-bye', 'demo-bye-ok'].forEach(id => {
+        updateMessage(id, 'pending');
+      });
+    }
+    
+    function registerUser() {
+      const username = document.getElementById('username').value;
+      setStatus('Registering as ' + username + '...');
+      log('Sending REGISTER request...');
+      updateMessage('demo-register', 'sent');
+      
+      // Simulate registration response
+      setTimeout(() => {
+        updateMessage('demo-register-ok', 'received');
+        registered = true;
+        setStatus('Registered as ' + username);
+        log('Received 200 OK - Registration successful');
+      }, 1000);
+    }
+    
+    function makeCall() {
+      if (!registered) {
+        log('Please register first.');
+        return;
+      }
+      
+      const target = document.getElementById('target').value;
+      setStatus('Calling ' + target + '...');
+      callStep = 0;
+      
+      // Reset all messages
+      ['demo-invite', 'demo-trying', 'demo-ringing', 'demo-ok', 'demo-ack', 'demo-bye', 'demo-bye-ok'].forEach(id => {
+        updateMessage(id, 'pending');
+      });
+      
+      // Start call flow
+      log('Sending INVITE request...');
+      updateMessage('demo-invite', 'sent');
+      
+      setTimeout(() => {
+        log('Received 100 Trying...');
+        updateMessage('demo-trying', 'received');
+      }, 800);
+      
+      setTimeout(() => {
+        log('Received 180 Ringing...');
+        updateMessage('demo-ringing', 'received');
+      }, 1600);
+      
+      setTimeout(() => {
+        log('Received 200 OK - Call answered!');
+        updateMessage('demo-ok', 'received');
+        inCall = true;
+        setStatus('In call with ' + target);
+        
+        // Send ACK
+        setTimeout(() => {
+          log('Sending ACK...');
+          updateMessage('demo-ack', 'sent');
+        }, 500);
+      }, 2400);
+    }
+    
+    function hangupCall() {
+      if (!inCall) {
+        log('No active call.');
+        return;
+      }
+      
+      log('Sending BYE request...');
+      updateMessage('demo-bye', 'sent');
+      
+      setTimeout(() => {
+        log('Received 200 OK - Call ended');
+        updateMessage('demo-bye-ok', 'received');
+        setStatus('Call ended');
+        inCall = false;
+      }, 800);
+    }
+  </script>
+</body>
+</html> 
