@@ -850,6 +850,247 @@ policy-map VOIP-POLICY
       </div>
     </div>
 
+    <!-- Call Flow Tab -->
+    <div id="flow" class="content">
+      <h2>🔄 SIP Call Flow Visualization</h2>
+      <p class="highlight" style="background: #fff3cd; padding: 1em; border-radius: 4px; margin-bottom: 2em;">
+        <strong>Understanding the SIP Call Lifecycle</strong><br>
+        This interactive diagram shows the complete SIP call flow from registration to call termination. Watch as each step is highlighted during the call process.
+      </p>
+      
+      <div class="call-flow">
+        <h3>Complete SIP Call Flow</h3>
+        
+        <!-- Registration Phase -->
+        <div class="flow-line">
+          <div class="client">📱 Client</div>
+          <div class="arrow">→</div>
+          <div class="message">REGISTER</div>
+          <div class="arrow">→</div>
+          <div class="server">🖥️ Server</div>
+          <div class="timeline">Step 1: Registration</div>
+        </div>
+        
+        <div class="flow-line">
+          <div class="client">📱 Client</div>
+          <div class="arrow">←</div>
+          <div class="message">200 OK</div>
+          <div class="arrow">←</div>
+          <div class="server">🖥️ Server</div>
+          <div class="timeline">Step 2: Registration Confirmed</div>
+        </div>
+        
+        <!-- Call Setup Phase -->
+        <div class="flow-line">
+          <div class="client">📱 Client</div>
+          <div class="arrow">→</div>
+          <div class="message">INVITE</div>
+          <div class="arrow">→</div>
+          <div class="server">🖥️ Server</div>
+          <div class="timeline">Step 3: Call Initiation</div>
+        </div>
+        
+        <div class="flow-line">
+          <div class="client">📱 Client</div>
+          <div class="arrow">←</div>
+          <div class="message">100 Trying</div>
+          <div class="arrow">←</div>
+          <div class="server">🖥️ Server</div>
+          <div class="timeline">Step 4: Call Processing</div>
+        </div>
+        
+        <div class="flow-line">
+          <div class="client">📱 Client</div>
+          <div class="arrow">←</div>
+          <div class="message">180 Ringing</div>
+          <div class="arrow">←</div>
+          <div class="server">🖥️ Server</div>
+          <div class="timeline">Step 5: Remote Phone Ringing</div>
+        </div>
+        
+        <div class="flow-line">
+          <div class="client">📱 Client</div>
+          <div class="arrow">←</div>
+          <div class="message">200 OK</div>
+          <div class="arrow">←</div>
+          <div class="server">🖥️ Server</div>
+          <div class="timeline">Step 6: Call Answered</div>
+        </div>
+        
+        <div class="flow-line">
+          <div class="client">📱 Client</div>
+          <div class="arrow">→</div>
+          <div class="message">ACK</div>
+          <div class="arrow">→</div>
+          <div class="server">🖥️ Server</div>
+          <div class="timeline">Step 7: Call Established</div>
+        </div>
+        
+        <!-- Media Exchange Phase -->
+        <div class="flow-line" style="background: #e8f5e8; padding: 1em; border-radius: 4px; margin: 1em 0;">
+          <div class="client">📱 Client</div>
+          <div class="arrow">↔</div>
+          <div class="message" style="background: #4caf50; color: white;">RTP Media Stream</div>
+          <div class="arrow">↔</div>
+          <div class="server">🖥️ Server</div>
+          <div class="timeline">Step 8: Voice Communication</div>
+        </div>
+        
+        <!-- Call Termination Phase -->
+        <div class="flow-line">
+          <div class="client">📱 Client</div>
+          <div class="arrow">→</div>
+          <div class="message">BYE</div>
+          <div class="arrow">→</div>
+          <div class="server">🖥️ Server</div>
+          <div class="timeline">Step 9: Call Termination</div>
+        </div>
+        
+        <div class="flow-line">
+          <div class="client">📱 Client</div>
+          <div class="arrow">←</div>
+          <div class="message">200 OK</div>
+          <div class="arrow">←</div>
+          <div class="server">🖥️ Server</div>
+          <div class="timeline">Step 10: Call Ended</div>
+        </div>
+      </div>
+      
+      <div class="guide-section">
+        <h3>📋 Call Flow Explanation</h3>
+        
+        <h4>Registration Phase (Steps 1-2)</h4>
+        <div class="exercise">
+          <p><strong>Purpose:</strong> Client registers its location with the SIP server</p>
+          <ul>
+            <li><strong>REGISTER:</strong> Client sends registration request with its IP address</li>
+            <li><strong>200 OK:</strong> Server confirms successful registration</li>
+            <li><strong>Result:</strong> Server now knows where to route calls for this client</li>
+          </ul>
+        </div>
+        
+        <h4>Call Setup Phase (Steps 3-7)</h4>
+        <div class="exercise">
+          <p><strong>Purpose:</strong> Establish a call session between two parties</p>
+          <ul>
+            <li><strong>INVITE:</strong> Initiates the call with session description (SDP)</li>
+            <li><strong>100 Trying:</strong> Server acknowledges receipt and is processing</li>
+            <li><strong>180 Ringing:</strong> Remote phone is ringing (optional)</li>
+            <li><strong>200 OK:</strong> Call is answered, includes remote SDP</li>
+            <li><strong>ACK:</strong> Confirms call establishment</li>
+          </ul>
+        </div>
+        
+        <h4>Media Exchange Phase (Step 8)</h4>
+        <div class="exercise">
+          <p><strong>Purpose:</strong> Exchange voice data using RTP protocol</p>
+          <ul>
+            <li><strong>RTP Streams:</strong> Bidirectional audio packets</li>
+            <li><strong>Codec Processing:</strong> Audio compression/decompression</li>
+            <li><strong>QoS Monitoring:</strong> Track packet loss, jitter, latency</li>
+          </ul>
+        </div>
+        
+        <h4>Call Termination Phase (Steps 9-10)</h4>
+        <div class="exercise">
+          <p><strong>Purpose:</strong> Gracefully end the call session</p>
+          <ul>
+            <li><strong>BYE:</strong> Either party can initiate call termination</li>
+            <li><strong>200 OK:</strong> Confirms call termination</li>
+            <li><strong>Cleanup:</strong> Resources are released</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="guide-section">
+        <h3>🔍 SIP Message Details</h3>
+        
+        <h4>INVITE Message Example</h4>
+        <div class="code-block">
+INVITE sip:bob@example.com SIP/2.0
+Via: SIP/2.0/UDP 192.168.1.100:5060
+From: &lt;sip:alice@example.com&gt;
+To: &lt;sip:bob@example.com&gt;
+Call-ID: abc123@192.168.1.100
+CSeq: 1 INVITE
+Contact: &lt;sip:alice@192.168.1.100:5060&gt;
+Content-Type: application/sdp
+Content-Length: 142
+
+v=0
+o=alice 2890844526 2890844526 IN IP4 192.168.1.100
+s=VoIP Call
+c=IN IP4 192.168.1.100
+t=0 0
+m=audio 10000 RTP/AVP 0
+a=rtpmap:0 PCMU/8000
+        </div>
+        
+        <h4>200 OK Response Example</h4>
+        <div class="code-block">
+SIP/2.0 200 OK
+Via: SIP/2.0/UDP 192.168.1.100:5060
+From: &lt;sip:alice@example.com&gt;
+To: &lt;sip:bob@example.com&gt;
+Call-ID: abc123@192.168.1.100
+CSeq: 1 INVITE
+Contact: &lt;sip:bob@192.168.1.101:5060&gt;
+Content-Type: application/sdp
+Content-Length: 142
+
+v=0
+o=bob 2890844527 2890844527 IN IP4 192.168.1.101
+s=VoIP Call
+c=IN IP4 192.168.1.101
+t=0 0
+m=audio 10002 RTP/AVP 0
+a=rtpmap:0 PCMU/8000
+        </div>
+      </div>
+      
+      <div class="guide-section">
+        <h3>🎯 Key SIP Concepts</h3>
+        
+        <h4>1. Transaction-Based Protocol</h4>
+        <div class="exercise">
+          <p>SIP uses a request-response model where each request generates one or more responses:</p>
+          <ul>
+            <li><strong>Provisional Responses:</strong> 1xx responses (100 Trying, 180 Ringing)</li>
+            <li><strong>Final Responses:</strong> 2xx, 3xx, 4xx, 5xx, 6xx responses</li>
+            <li><strong>ACK:</strong> Confirms receipt of final responses to INVITE</li>
+          </ul>
+        </div>
+        
+        <h4>2. Session Description Protocol (SDP)</h4>
+        <div class="exercise">
+          <p>SDP is used in SIP messages to describe media session parameters:</p>
+          <ul>
+            <li><strong>Media Type:</strong> Audio, video, or data</li>
+            <li><strong>Transport Protocol:</strong> RTP/AVP, RTP/SAVP</li>
+            <li><strong>Codec Information:</strong> Payload types and parameters</li>
+            <li><strong>Network Information:</strong> IP addresses and ports</li>
+          </ul>
+        </div>
+        
+        <h4>3. Call State Management</h4>
+        <div class="exercise">
+          <p>SIP maintains call state through various mechanisms:</p>
+          <ul>
+            <li><strong>Call-ID:</strong> Unique identifier for each call</li>
+            <li><strong>CSeq:</strong> Sequence number for request ordering</li>
+            <li><strong>Dialog:</strong> Persistent relationship between endpoints</li>
+            <li><strong>Registration:</strong> Location service for call routing</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="exercise" style="background: #e8f5e8; padding: 1.5em; border-left: 4px solid #28a745; margin: 2em 0;">
+        <h4>🔄 Understanding Call Flow is Essential</h4>
+        <p><strong>The SIP call flow is the foundation of VoIP communication</strong>. By understanding each step in the process, you can troubleshoot issues, optimize performance, and design better VoIP systems.</p>
+        <p>This visualization shows the standard SIP call flow, but real-world implementations may include additional steps like authentication, authorization, and media negotiation.</p>
+      </div>
+    </div>
+
     <!-- VoIP Security Tab -->
     <div id="security" class="content">
       <h2>🔒 VoIP Security</h2>
