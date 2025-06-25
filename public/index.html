@@ -601,6 +601,255 @@ RTP Header (12 bytes):
       </div>
     </div>
 
+    <!-- Network Infrastructure Tab -->
+    <div id="network-infra" class="content">
+      <h2>🌐 Network Infrastructure</h2>
+      <p class="highlight" style="background: #fff3cd; padding: 1em; border-radius: 4px; margin-bottom: 2em;">
+        <strong>Understanding the Network Foundation of VoIP</strong><br>
+        VoIP relies on a robust network infrastructure to deliver high-quality voice communications. This section explores the key network components and technologies that make VoIP possible.
+      </p>
+      
+      <div class="guide-section">
+        <h3>🏗️ Core Network Components</h3>
+        
+        <h4>1. Session Border Controllers (SBCs)</h4>
+        <div class="exercise">
+          <p><strong>What are SBCs?</strong> Network elements that control signaling and media streams for VoIP sessions.</p>
+          <ul>
+            <li><strong>Security:</strong> Protect against DoS attacks and unauthorized access</li>
+            <li><strong>Interoperability:</strong> Enable communication between different VoIP systems</li>
+            <li><strong>Traffic Management:</strong> Control bandwidth and call routing</li>
+            <li><strong>NAT Traversal:</strong> Handle network address translation issues</li>
+          </ul>
+          <div class="code-block">
+SBC Functions:
+- SIP Message Inspection & Validation
+- Media Stream Control
+- Topology Hiding
+- Protocol Translation
+- Quality of Service (QoS) Enforcement
+          </div>
+        </div>
+        
+        <h4>2. Border Gateways</h4>
+        <div class="exercise">
+          <p><strong>What are Border Gateways?</strong> Network devices that connect different VoIP domains and handle protocol translation.</p>
+          <ul>
+            <li><strong>Protocol Conversion:</strong> Translate between SIP, H.323, and other protocols</li>
+            <li><strong>Media Transcoding:</strong> Convert between different audio codecs</li>
+            <li><strong>Call Routing:</strong> Direct calls between different networks</li>
+            <li><strong>Security:</strong> Provide firewall and access control</li>
+          </ul>
+          <div class="code-block">
+Border Gateway Functions:
+- SIP ↔ H.323 Protocol Translation
+- G.711 ↔ G.729 Codec Conversion
+- Call Admission Control
+- Billing & CDR Generation
+          </div>
+        </div>
+        
+        <h4>3. Media Gateways</h4>
+        <div class="exercise">
+          <p><strong>What are Media Gateways?</strong> Devices that convert between circuit-switched and packet-switched networks.</p>
+          <ul>
+            <li><strong>PSTN Integration:</strong> Connect VoIP to traditional phone networks</li>
+            <li><strong>Media Conversion:</strong> Convert between TDM and IP media streams</li>
+            <li><strong>Signaling Translation:</strong> Convert SS7 to SIP signaling</li>
+            <li><strong>Call Control:</strong> Manage call setup and teardown</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="guide-section">
+        <h3>🌍 Network Topologies</h3>
+        
+        <h4>1. Enterprise VoIP Architecture</h4>
+        <div class="exercise">
+          <h5>Typical Enterprise Setup</h5>
+          <ul>
+            <li><strong>IP Phones:</strong> Connect directly to LAN switches</li>
+            <li><strong>VoIP Server:</strong> Central call control and management</li>
+            <li><strong>Gateway:</strong> Connect to PSTN for external calls</li>
+            <li><strong>Firewall:</strong> Protect VoIP traffic and control access</li>
+          </ul>
+          <div class="code-block">
+Enterprise Network Flow:
+Internet → Firewall → VoIP Server → LAN Switch → IP Phones
+                    ↓
+                 PSTN Gateway → Public Phone Network
+          </div>
+        </div>
+        
+        <h4>2. Service Provider Architecture</h4>
+        <div class="exercise">
+          <h5>Carrier-Grade VoIP Network</h5>
+          <ul>
+            <li><strong>Core Network:</strong> High-capacity backbone for call routing</li>
+            <li><strong>Edge Devices:</strong> SBCs and gateways for customer connections</li>
+            <li><strong>Signaling Servers:</strong> SIP proxies and registrars</li>
+            <li><strong>Media Servers:</strong> Handle voicemail, conferencing, and IVR</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="guide-section">
+        <h3>🔧 Network Protocols & Standards</h3>
+        
+        <h4>1. SIP (Session Initiation Protocol)</h4>
+        <div class="exercise">
+          <p><strong>RFC 3261:</strong> The standard protocol for VoIP signaling</p>
+          <ul>
+            <li><strong>Request-Response:</strong> Client-server communication model</li>
+            <li><strong>Text-Based:</strong> Human-readable message format</li>
+            <li><strong>Stateless:</strong> Each request is independent</li>
+            <li><strong>Extensible:</strong> Easy to add new features</li>
+          </ul>
+          <div class="code-block">
+SIP Message Example:
+INVITE sip:bob@example.com SIP/2.0
+Via: SIP/2.0/UDP 192.168.1.100:5060
+From: &lt;sip:alice@example.com&gt;
+To: &lt;sip:bob@example.com&gt;
+Call-ID: abc123@192.168.1.100
+CSeq: 1 INVITE
+Contact: &lt;sip:alice@192.168.1.100:5060&gt;
+Content-Type: application/sdp
+Content-Length: 142
+          </div>
+        </div>
+        
+        <h4>2. RTP (Real-time Transport Protocol)</h4>
+        <div class="exercise">
+          <p><strong>RFC 3550:</strong> Protocol for delivering audio and video over IP</p>
+          <ul>
+            <li><strong>Real-time:</strong> Designed for live streaming</li>
+            <li><strong>Sequence Numbers:</strong> Detect packet loss and reordering</li>
+            <li><strong>Timestamps:</strong> Synchronize media playback</li>
+            <li><strong>Payload Type:</strong> Identify the codec being used</li>
+          </ul>
+        </div>
+        
+        <h4>3. SDP (Session Description Protocol)</h4>
+        <div class="exercise">
+          <p><strong>RFC 4566:</strong> Protocol for describing multimedia sessions</p>
+          <ul>
+            <li><strong>Session Information:</strong> Describe call parameters</li>
+            <li><strong>Media Description:</strong> Specify codecs and ports</li>
+            <li><strong>Connection Information:</strong> Define network addresses</li>
+            <li><strong>Timing Information:</strong> Schedule session times</li>
+          </ul>
+          <div class="code-block">
+SDP Example:
+v=0
+o=alice 2890844526 2890844526 IN IP4 192.168.1.100
+s=VoIP Call
+c=IN IP4 192.168.1.100
+t=0 0
+m=audio 10000 RTP/AVP 0
+a=rtpmap:0 PCMU/8000
+          </div>
+        </div>
+      </div>
+
+      <div class="guide-section">
+        <h3>📊 Quality of Service (QoS)</h3>
+        
+        <h4>1. QoS Mechanisms</h4>
+        <div class="exercise">
+          <h5>Network Quality Assurance</h5>
+          <ul>
+            <li><strong>Traffic Classification:</strong> Identify VoIP packets</li>
+            <li><strong>Priority Queuing:</strong> Give VoIP traffic higher priority</li>
+            <li><strong>Bandwidth Reservation:</strong> Reserve bandwidth for voice</li>
+            <li><strong>Jitter Buffering:</strong> Compensate for network delays</li>
+          </ul>
+          <div class="code-block">
+QoS Configuration Example:
+# Classify VoIP traffic
+class-map VOIP
+  match dscp ef
+  match access-group 100
+
+# Apply priority queuing
+policy-map VOIP-POLICY
+  class VOIP
+    priority 1000
+    police 1000000
+          </div>
+        </div>
+        
+        <h4>2. Network Metrics</h4>
+        <div class="exercise">
+          <h5>Key Performance Indicators</h5>
+          <ul>
+            <li><strong>Latency:</strong> Round-trip time (target: &lt;150ms)</li>
+            <li><strong>Jitter:</strong> Variation in packet arrival (target: &lt;30ms)</li>
+            <li><strong>Packet Loss:</strong> Percentage of lost packets (target: &lt;1%)</li>
+            <li><strong>MOS Score:</strong> Mean Opinion Score (target: &gt;4.0)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="guide-section">
+        <h3>🔒 Network Security</h3>
+        
+        <h4>1. VoIP Security Threats</h4>
+        <div class="exercise">
+          <h5>Common Attack Vectors</h5>
+          <ul>
+            <li><strong>Eavesdropping:</strong> Intercept and listen to calls</li>
+            <li><strong>Call Hijacking:</strong> Redirect calls to unauthorized numbers</li>
+            <li><strong>DoS Attacks:</strong> Overwhelm VoIP systems</li>
+            <li><strong>Toll Fraud:</strong> Make unauthorized expensive calls</li>
+          </ul>
+        </div>
+        
+        <h4>2. Security Solutions</h4>
+        <div class="exercise">
+          <h5>Protection Measures</h5>
+          <ul>
+            <li><strong>Encryption:</strong> SRTP for media, TLS for signaling</li>
+            <li><strong>Authentication:</strong> Strong passwords and certificates</li>
+            <li><strong>Network Segmentation:</strong> Isolate VoIP traffic</li>
+            <li><strong>Firewall Rules:</strong> Control access to VoIP services</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="guide-section">
+        <h3>🚀 Emerging Technologies</h3>
+        
+        <h4>1. 5G and VoIP</h4>
+        <div class="exercise">
+          <p><strong>Next-Generation Networks:</strong> How 5G enhances VoIP capabilities</p>
+          <ul>
+            <li><strong>Ultra-Low Latency:</strong> 1ms round-trip times</li>
+            <li><strong>High Bandwidth:</strong> Support for HD voice and video</li>
+            <li><strong>Network Slicing:</strong> Dedicated resources for voice</li>
+            <li><strong>Edge Computing:</strong> Reduced latency through local processing</li>
+          </ul>
+        </div>
+        
+        <h4>2. WebRTC</h4>
+        <div class="exercise">
+          <p><strong>Browser-Based VoIP:</strong> Making VoIP accessible through web browsers</p>
+          <ul>
+            <li><strong>No Plugins:</strong> Native browser support</li>
+            <li><strong>P2P Communication:</strong> Direct browser-to-browser calls</li>
+            <li><strong>Standard APIs:</strong> Consistent across browsers</li>
+            <li><strong>Security Built-in:</strong> Mandatory encryption</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exercise" style="background: #e8f5e8; padding: 1.5em; border-left: 4px solid #28a745; margin: 2em 0;">
+        <h4>🌐 The Foundation of Modern Communication</h4>
+        <p><strong>Network infrastructure is the backbone of VoIP technology</strong>. Understanding how SBCs, gateways, protocols, and QoS work together helps us build reliable, secure, and high-quality voice communication systems.</p>
+        <p>As networks evolve with 5G, WebRTC, and other technologies, the importance of robust infrastructure design becomes even more critical for delivering exceptional VoIP experiences.</p>
+      </div>
+    </div>
+
     <!-- VoIP Security Tab -->
     <div id="security" class="content">
       <h2>🔒 VoIP Security</h2>
@@ -1435,4 +1684,5 @@ Action: Block IP, investigate credentials
     }
   </script>
 </body>
+</html> 
 </html> 
